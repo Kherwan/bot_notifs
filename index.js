@@ -1,7 +1,7 @@
 export default {
   async fetch(request, env) {
     const response = await fetch(
-      "https://v3.football.api-sports.io/status",
+      "https://v3.football.api-sports.io/teams?search=Rennes",
       {
         headers: {
           "x-apisports-key": env.API_FOOTBALL_KEY,
