@@ -1,4 +1,4 @@
-name = "roazhon-parle-bot"
+name = "bot-notifs"
 main = "index.js"
 compatibility_date = "2026-09-02"
 
