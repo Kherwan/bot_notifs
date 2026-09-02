@@ -1,22 +1,30 @@
 export default {
   async fetch(request, env) {
-    const response = await fetch(env.DISCORD_WEBHOOK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: "🤖 **Roazhon Parle est connecté !** ❤️🖤",
-      }),
-    });
+    const response = await fetch(
+      "https://v3.football.api-sports.io/status",
+      {
+        headers: {
+          "x-apisports-key": env.API_FOOTBALL_KEY,
+        },
+      }
+    );
 
     if (!response.ok) {
       return new Response(
-        `Erreur Discord : ${response.status}`,
+        `Erreur API-Football : ${response.status}`,
         { status: 500 }
       );
     }
 
-    return new Response("Message envoyé sur Discord ! ❤️🖤");
+    const data = await response.json();
+
+    return new Response(
+      JSON.stringify(data),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   },
 };
