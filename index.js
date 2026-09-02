@@ -1,9 +1,23 @@
 export default {
   async fetch(request, env) {
-    if (!env.API_FOOTBALL_KEY) {
-      return new Response("CLÉ API ABSENTE", { status: 500 });
-    }
+    const response = await fetch(
+      "https://v3.football.api-sports.io/status",
+      {
+        headers: {
+          "x-apisports-key": env.API_FOOTBALL_KEY,
+        },
+      }
+    );
 
-    return new Response("CLÉ API PRÉSENTE ❤️🖤");
+    const text = await response.text();
+
+    return new Response(
+      `HTTP ${response.status}\n\n${text}`,
+      {
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+        },
+      }
+    );
   },
 };
