@@ -4,7 +4,7 @@ export default {
       "https://v3.football.api-sports.io/status",
       {
         headers: {
-          ""x-rapidapi-key": env.API_FOOTBALL_KEY,,
+          "x-apisports-key": env.API_FOOTBALL_KEY,,
         },
       }
     );
