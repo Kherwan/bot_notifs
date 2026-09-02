@@ -1,3 +1,7 @@
 name = "roazhon-parle-bot"
 main = "index.js"
 compatibility_date = "2026-09-02"
+
+[observability.logs]
+enabled = true
+invocation_logs = true
