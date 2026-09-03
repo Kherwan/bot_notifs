@@ -1,23 +1,20 @@
 export default {
   async fetch(request, env) {
-    const response = await fetch(
-      "https://api.bigballsdata.com/v1/user/me",
-      {
-        headers: {
-          "x-api-key": env.BIGBALLS_API_KEY,
-        },
-      }
-    );
-
-    const text = await response.text();
-
     return new Response(
-      `HTTP ${response.status}\n\n${text}`,
+      JSON.stringify({
+        secret_present: !!env.BIGBALLS_API_KEY,
+        secret_length: env.BIGBALLS_API_KEY
+          ? env.BIGBALLS_API_KEY.length
+          : 0,
+        correct_prefix: env.BIGBALLS_API_KEY
+          ? env.BIGBALLS_API_KEY.startsWith("bbs_live_")
+          : false,
+      }),
       {
         headers: {
-          "Content-Type": "text/plain; charset=utf-8",
+          "Content-Type": "application/json",
         },
-      }
+      },
     );
   },
 };
