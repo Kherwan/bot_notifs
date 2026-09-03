@@ -1,12 +1,10 @@
 export default {
   async fetch(request, env) {
-    const matchId = "db9b73aa-0cbb-4438-95e4-867ee91fb03d";
-
     const response = await fetch(
-      `https://api.bigballsdata.com/v1/matches/${matchId}/events?sport=football`,
+      "https://v3.football.api-sports.io/fixtures?live=all",
       {
         headers: {
-          "x-api-key": env.BIGBALLS_API_KEY,
+          "x-apisports-key": env.API_FOOTBALL_KEY,
         },
       }
     );
