@@ -1,11 +1,10 @@
 export default {
   async fetch(request, env) {
     const response = await fetch(
-      "https://api.bigballsdata.com/v1/soccer/fixtures?league=61",
+      "https://api.bigballsdata.com/v1/user/me",
       {
         headers: {
-          "Authorization": `Bearer ${env.BIGBALLS_API_KEY}`,
-          "Content-Type": "application/json",
+          "x-api-key": env.BIGBALLS_API_KEY,
         },
       }
     );
@@ -21,4 +20,4 @@ export default {
       }
     );
   },
-};   
+};
