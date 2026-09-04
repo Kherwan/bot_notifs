@@ -1,7 +1,9 @@
 export default {
   async fetch(request, env) {
+    const matchId = "db9b73aa-0cbb-4438-95e4-867ee91fb03d";
+
     const response = await fetch(
-      "https://api.bigballsdata.com/v1/matches?sport=football&league=ligue1",
+      `https://api.bigballsdata.com/v1/matches/${matchId}?sport=football`,
       {
         headers: {
           "x-api-key": env.BIGBALLS_API_KEY,
@@ -9,25 +11,13 @@ export default {
       }
     );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return new Response(
-        `Erreur Big Balls : ${response.status}\n\n${JSON.stringify(data, null, 2)}`,
-        {
-          status: 500,
-          headers: {
-            "Content-Type": "text/plain; charset=utf-8",
-          },
-        }
-      );
-    }
+    const text = await response.text();
 
     return new Response(
-      JSON.stringify(data, null, 2),
+      `HTTP ${response.status}\n\n${text}`,
       {
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
+          "Content-Type": "text/plain; charset=utf-8",
         },
       }
     );
