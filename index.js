@@ -9,13 +9,25 @@ export default {
       }
     );
 
-    const text = await response.text();
+    const data = await response.json();
+
+    if (!response.ok) {
+      return new Response(
+        `Erreur Big Balls : ${response.status}\n\n${JSON.stringify(data, null, 2)}`,
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "text/plain; charset=utf-8",
+          },
+        }
+      );
+    }
 
     return new Response(
-      `HTTP ${response.status}\n\n${text}`,
+      JSON.stringify(data, null, 2),
       {
         headers: {
-          "Content-Type": "text/plain; charset=utf-8",
+          "Content-Type": "application/json; charset=utf-8",
         },
       }
     );
