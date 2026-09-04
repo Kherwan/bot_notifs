@@ -18,35 +18,51 @@ export default {
       );
     }
 
-    // On cherche le Stade Rennais (ID API-Football = 94)
     const match = data.response?.find(
       (fixture) =>
         fixture.teams?.home?.id === 94 ||
         fixture.teams?.away?.id === 94
     );
 
+    let message;
+
     if (!match) {
+      message = "🔴 **Stade Rennais : aucun match en direct actuellement.**";
+    } else {
+      const home = match.teams.home.name;
+      const away = match.teams.away.name;
+      const homeGoals = match.goals.home;
+      const awayGoals = match.goals.away;
+      const status = match.fixture.status;
+
+      message = [
+        "🔴 **STADE RENNAIS — DIRECT**",
+        "",
+        `⚽ **${home} ${homeGoals} - ${awayGoals} ${away}**`,
+        `⏱️ ${status.long} (${status.elapsed ?? "?"}')`,
+        "",
+        `🆔 Fixture : ${match.fixture.id}`,
+        `📋 Événements : ${match.events?.length ?? 0}`,
+      ].join("\n");
+    }
+
+    const discordResponse = await fetch(env.DISCORD_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: message,
+      }),
+    });
+
+    if (!discordResponse.ok) {
       return new Response(
-        "🔴 Stade Rennais : aucun match en direct actuellement."
+        `Discord erreur : ${discordResponse.status}`,
+        { status: 500 }
       );
     }
 
-    const home = match.teams.home.name;
-    const away = match.teams.away.name;
-    const homeGoals = match.goals.home;
-    const awayGoals = match.goals.away;
-    const status = match.fixture.status;
-
-    return new Response(
-      [
-        "🔴 STADE RENNAIS TROUVÉ !",
-        "",
-        `${home} ${homeGoals} - ${awayGoals} ${away}`,
-        `Fixture ID : ${match.fixture.id}`,
-        `Statut : ${status.long} (${status.elapsed ?? "?"}')`,
-        "",
-        `Événements : ${match.events?.length ?? 0}`,
-      ].join("\n")
-    );
+    return new Response("✅ Message envoyé sur Discord !");
   },
 };
