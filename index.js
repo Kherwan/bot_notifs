@@ -1,7 +1,7 @@
 export default {
   async fetch(request, env) {
     const response = await fetch(
-      "https://v3.football.api-sports.io/fixtures?live=all",
+      "https://v3.football.api-sports.io/fixtures?team=94&date=2026-09-06",
       {
         headers: {
           "x-apisports-key": env.API_FOOTBALL_KEY,
