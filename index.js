@@ -1,10 +1,12 @@
 export default {
   async fetch(request, env) {
+    const matchId = "REMPLACE_PAR_ID_API_FOOTBALL";
+
     const response = await fetch(
-      "https://api.bigballsdata.com/v1/matches?sport=football&date=2026-09-06",
+      `https://v3.football.api-sports.io/fixtures?id=${matchId}`,
       {
         headers: {
-          "x-api-key": env.BIGBALLS_API_KEY,
+          "x-apisports-key": env.API_FOOTBALL_KEY,
         },
       }
     );
