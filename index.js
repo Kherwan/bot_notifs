@@ -1,9 +1,7 @@
 export default {
   async fetch(request, env) {
-    const matchId = "REMPLACE_PAR_ID_API_FOOTBALL";
-
     const response = await fetch(
-      `https://v3.football.api-sports.io/fixtures?id=${matchId}`,
+      "https://v3.football.api-sports.io/fixtures?team=94&from=2026-09-06&to=2026-09-06",
       {
         headers: {
           "x-apisports-key": env.API_FOOTBALL_KEY,
