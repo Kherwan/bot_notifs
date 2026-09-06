@@ -10,90 +10,15 @@ export default {
       }
     );
 
-    if (!response.ok) {
-      return new Response(
-        `Erreur API-Football : ${response.status}`,
-        { status: 500 }
-      );
-    }
+    const text = await response.text();
 
-    const data = await response.json();
-
-    const match = data.response?.[0];
-
-    if (!match) {
-      return new Response("Match introuvable", { status: 404 });
-    }
-
-    const events = match.events || [];
-
-    // On récupère uniquement les événements qui concernent Rennes
-    const rennesEvents = events.filter(
-      event => event.team?.id === 94
-    );
-
-    if (rennesEvents.length === 0) {
-      return new Response("Aucun événement Rennes pour le moment.");
-    }
-
-    // Pour l'instant, on affiche le dernier événement détecté
-    const event = rennesEvents[rennesEvents.length - 1];
-
-    let message = "";
-
-    if (event.type === "Goal") {
-      message =
-        `⚽ **BUT POUR RENNES !**\n\n` +
-        `⏱️ **${event.time.elapsed}'**\n` +
-        `🔴⚫ **${event.player?.name || "Buteur inconnu"}**\n` +
-        `🎯 Passe décisive : ${event.assist?.name || "aucune"}\n\n` +
-        `🏟️ Angers ${match.goals.home}–${match.goals.away} Rennes`;
-    }
-
-    else if (event.type === "Card") {
-      message =
-        `🟨 **CARTON POUR RENNES**\n\n` +
-        `⏱️ **${event.time.elapsed}'**\n` +
-        `🔴⚫ ${event.player?.name || "Joueur inconnu"}\n` +
-        `${event.detail || ""}`;
-    }
-
-    else if (event.type === "subst") {
-      message =
-        `🔄 **CHANGEMENT POUR RENNES**\n\n` +
-        `⏱️ **${event.time.elapsed}'**\n` +
-        `⬆️ ${event.assist?.name || "Entrant"}\n` +
-        `⬇️ ${event.player?.name || "Sortant"}`;
-    }
-
-    else {
-      message =
-        `📢 **ÉVÉNEMENT RENNES**\n\n` +
-        `⏱️ ${event.time.elapsed}'\n` +
-        `${event.type} — ${event.detail || ""}`;
-    }
-
-    // Envoi vers Discord
-    const discordResponse = await fetch(
-      env.DISCORD_WEBHOOK_URL,
+    return new Response(
+      `HTTP ${response.status}\n\n${text}`,
       {
-        method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/plain; charset=utf-8",
         },
-        body: JSON.stringify({
-          content: message,
-        }),
       }
     );
-
-    if (!discordResponse.ok) {
-      return new Response(
-        `Erreur Discord : ${discordResponse.status}`,
-        { status: 500 }
-      );
-    }
-
-    return new Response("Événement envoyé sur Discord ❤️🖤");
   },
 };
