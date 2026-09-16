@@ -1,5 +1,6 @@
 export default {
   async fetch(request, env) {
+    try {
 
     // Pour l'instant on conserve le match Angers - Rennes
     // On mettra l'ID Sturm Graz - Rennes après notre test.
@@ -200,8 +201,19 @@ function formatEvent(event, match) {
       `📺 **VAR — ${teamName.toUpperCase()}**\n\n` +
       `⏱️ **${minute}**\n` +
       `${event.detail || "Décision VAR"}`
-    );
-  }
+    } catch (error) {
+      return new Response(
+        `❌ ERREUR WORKER\n\n${error.stack || error.message || error}`,
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "text/plain; charset=utf-8"
+          }
+        }
+      );
+    }
+  },
+};
 
 
   // Pour la V2 on ignore les événements non gérés
