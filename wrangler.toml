@@ -2,6 +2,10 @@ name = "bot-notifs"
 main = "index.js"
 compatibility_date = "2026-09-02"
 
+[[kv_namespaces]]
+binding = "MATCH_EVENTS"
+id = "750e8c0c20e740c0bb86d50df17cfbf5"
+
 [observability.logs]
 enabled = true
 invocation_logs = true
