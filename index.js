@@ -52,6 +52,6 @@ export default {
 
   async scheduled(event, env, ctx) {
     // Le Cron reste actif, mais aucune requête API automatique pour l'instant.
-    console.log(`✅ CRON OK — ${new Date().toISOString()}`);
+    console.log(`✅ CRON V3 OK — ${new Date().toISOString()}`);
   }
 };
